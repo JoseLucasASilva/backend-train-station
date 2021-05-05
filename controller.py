@@ -8,6 +8,22 @@ from models.departure import get_departures_from_response
 
 app = FastAPI()
 
+maquinas = {
+	"1": {
+  	"name": "Cortadora",
+    "status": "rodando",
+  },
+  "2": {
+    "name": "Fresa",
+    "status": "erro",
+  },
+}
+
+DEFAULT_ERROR = {
+    "name": "Cortador a Laser",
+    "status": "parada",
+},
+
 app.add_middleware(
     CORSMiddleware,
     allow_origins=["*"],
@@ -16,20 +32,6 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-@app.get("/")
-def index():
-    return {"status": "Working"}
-
-
-@app.get("/stations")
-def get_stations():
-    response = train_requests.get_stations()
-    stations = get_stations_from_response(response)
-    return stations
-
-
-@app.get("/departures/{station_code}")
-def get_departures(station_code: str):
-    response = train_requests.get_departures(station_code)
-    departures = get_departures_from_response(response)
-    return departures
+@app.get("/departures/{id_maquina}")
+def get_departures(id_maquina: str):
+    return maquinas.get(id_maquina, DEFAULT_ERROR)
