@@ -17,12 +17,11 @@ maquinas = {
     "name": "Fresa",
     "status": "erro",
   },
-}
-
-DEFAULT_ERROR = {
+  "3": {
     "name": "Cortador a Laser",
     "status": "parada",
-},
+  }
+}
 
 app.add_middleware(
     CORSMiddleware,
@@ -32,6 +31,6 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-@app.get("/departures/{id_maquina}")
-def get_departures(id_maquina: str):
-    return maquinas.get(id_maquina, DEFAULT_ERROR)
+@app.get("/maquinas/{id_maquina}")
+def get_maquinas(id_maquina: str):
+    return maquinas.get(id_maquina, maquinas["3"])
